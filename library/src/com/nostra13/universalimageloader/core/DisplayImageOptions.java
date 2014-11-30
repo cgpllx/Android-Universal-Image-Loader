@@ -33,23 +33,29 @@ import com.nostra13.universalimageloader.core.process.BitmapProcessor;
 /**
  * Contains options for image display. Defines:
  * <ul>
- * <li>whether stub image will be displayed in {@link com.nostra13.universalimageloader.core.imageaware.ImageAware
- * image aware view} during image loading</li>
- * <li>whether stub image will be displayed in {@link com.nostra13.universalimageloader.core.imageaware.ImageAware
- * image aware view} if empty URI is passed</li>
- * <li>whether stub image will be displayed in {@link com.nostra13.universalimageloader.core.imageaware.ImageAware
- * image aware view} if image loading fails</li>
- * <li>whether {@link com.nostra13.universalimageloader.core.imageaware.ImageAware image aware view} should be reset
- * before image loading start</li>
+ * <li>whether stub image will be displayed in
+ * {@link com.nostra13.universalimageloader.core.imageaware.ImageAware image
+ * aware view} during image loading</li>
+ * <li>whether stub image will be displayed in
+ * {@link com.nostra13.universalimageloader.core.imageaware.ImageAware image
+ * aware view} if empty URI is passed</li>
+ * <li>whether stub image will be displayed in
+ * {@link com.nostra13.universalimageloader.core.imageaware.ImageAware image
+ * aware view} if image loading fails</li>
+ * <li>whether
+ * {@link com.nostra13.universalimageloader.core.imageaware.ImageAware image
+ * aware view} should be reset before image loading start</li>
  * <li>whether loaded image will be cached in memory</li>
  * <li>whether loaded image will be cached on disk</li>
  * <li>image scale type</li>
  * <li>decoding options (including bitmap decoding configuration)</li>
  * <li>delay before loading of image</li>
  * <li>whether consider EXIF parameters of image</li>
- * <li>auxiliary object which will be passed to {@link ImageDownloader#getStream(String, Object) ImageDownloader}</li>
+ * <li>auxiliary object which will be passed to
+ * {@link ImageDownloader#getStream(String, Object) ImageDownloader}</li>
  * <li>pre-processor for image Bitmap (before caching in memory)</li>
- * <li>post-processor for image Bitmap (after caching in memory, before displaying)</li>
+ * <li>post-processor for image Bitmap (after caching in memory, before
+ * displaying)</li>
  * <li>how decoded {@link Bitmap} will be displayed</li>
  * </ul>
  * <p/>
@@ -58,7 +64,8 @@ import com.nostra13.universalimageloader.core.process.BitmapProcessor;
  * <li>with {@link Builder}:<br />
  * <b>i.e.</b> :
  * <code>new {@link DisplayImageOptions}.{@link Builder#Builder() Builder()}.{@link Builder#cacheInMemory() cacheInMemory()}.
- * {@link Builder#showImageOnLoading(int) showImageOnLoading()}.{@link Builder#build() build()}</code><br />
+ * {@link Builder#showImageOnLoading(int) showImageOnLoading()}.{@link Builder#build() build()}</code>
+ * <br />
  * </li>
  * <li>or by static method: {@link #createSimple()}</li> <br />
  *
@@ -80,7 +87,7 @@ public final class DisplayImageOptions {
 	private final Options decodingOptions;
 	private final int delayBeforeLoading;
 	private final boolean considerExifParams;
-	private final HashMap<String,String> extraForDownloader;
+	private final HashMap<String, String> header;
 	private final BitmapProcessor preProcessor;
 	private final BitmapProcessor postProcessor;
 	private final BitmapDisplayer displayer;
@@ -101,7 +108,7 @@ public final class DisplayImageOptions {
 		decodingOptions = builder.decodingOptions;
 		delayBeforeLoading = builder.delayBeforeLoading;
 		considerExifParams = builder.considerExifParams;
-		extraForDownloader = builder.extraForDownloader;
+		header = builder.header;// 请求头信息
 		preProcessor = builder.preProcessor;
 		postProcessor = builder.postProcessor;
 		displayer = builder.displayer;
@@ -173,8 +180,8 @@ public final class DisplayImageOptions {
 		return considerExifParams;
 	}
 
-	public HashMap<String,String> getExtraForDownloader() {
-		return extraForDownloader;
+	public HashMap<String, String> getExtraForDownloader() {
+		return header;
 	}
 
 	public BitmapProcessor getPreProcessor() {
@@ -216,7 +223,7 @@ public final class DisplayImageOptions {
 		private Options decodingOptions = new Options();
 		private int delayBeforeLoading = 0;
 		private boolean considerExifParams = false;
-		private HashMap<String,String> extraForDownloader = null;
+		private HashMap<String, String> header = null;
 		private BitmapProcessor preProcessor = null;
 		private BitmapProcessor postProcessor = null;
 		private BitmapDisplayer displayer = DefaultConfigurationFactory.createBitmapDisplayer();
@@ -229,23 +236,12 @@ public final class DisplayImageOptions {
 		}
 
 		/**
-		 * Stub image will be displayed in {@link com.nostra13.universalimageloader.core.imageaware.ImageAware
+		 * Incoming image will be displayed in
+		 * {@link com.nostra13.universalimageloader.core.imageaware.ImageAware
 		 * image aware view} during image loading
 		 *
-		 * @param imageRes Stub image resource
-		 * @deprecated Use {@link #showImageOnLoading(int)} instead
-		 */
-		@Deprecated
-		public Builder showStubImage(int imageRes) {
-			imageResOnLoading = imageRes;
-			return this;
-		}
-
-		/**
-		 * Incoming image will be displayed in {@link com.nostra13.universalimageloader.core.imageaware.ImageAware
-		 * image aware view} during image loading
-		 *
-		 * @param imageRes Image resource
+		 * @param imageRes
+		 *            Image resource
 		 */
 		public Builder showImageOnLoading(int imageRes) {
 			imageResOnLoading = imageRes;
@@ -253,9 +249,11 @@ public final class DisplayImageOptions {
 		}
 
 		/**
-		 * Incoming drawable will be displayed in {@link com.nostra13.universalimageloader.core.imageaware.ImageAware
-		 * image aware view} during image loading.
-		 * This option will be ignored if {@link DisplayImageOptions.Builder#showImageOnLoading(int)} is set.
+		 * Incoming drawable will be displayed in
+		 * {@link com.nostra13.universalimageloader.core.imageaware.ImageAware
+		 * image aware view} during image loading. This option will be ignored
+		 * if {@link DisplayImageOptions.Builder#showImageOnLoading(int)} is
+		 * set.
 		 */
 		public Builder showImageOnLoading(Drawable drawable) {
 			imageOnLoading = drawable;
@@ -263,11 +261,13 @@ public final class DisplayImageOptions {
 		}
 
 		/**
-		 * Incoming image will be displayed in {@link com.nostra13.universalimageloader.core.imageaware.ImageAware
-		 * image aware view} if empty URI (null or empty
-		 * string) will be passed to <b>ImageLoader.displayImage(...)</b> method.
+		 * Incoming image will be displayed in
+		 * {@link com.nostra13.universalimageloader.core.imageaware.ImageAware
+		 * image aware view} if empty URI (null or empty string) will be passed
+		 * to <b>ImageLoader.displayImage(...)</b> method.
 		 *
-		 * @param imageRes Image resource
+		 * @param imageRes
+		 *            Image resource
 		 */
 		public Builder showImageForEmptyUri(int imageRes) {
 			imageResForEmptyUri = imageRes;
@@ -275,10 +275,12 @@ public final class DisplayImageOptions {
 		}
 
 		/**
-		 * Incoming drawable will be displayed in {@link com.nostra13.universalimageloader.core.imageaware.ImageAware
-		 * image aware view} if empty URI (null or empty
-		 * string) will be passed to <b>ImageLoader.displayImage(...)</b> method.
-		 * This option will be ignored if {@link DisplayImageOptions.Builder#showImageForEmptyUri(int)} is set.
+		 * Incoming drawable will be displayed in
+		 * {@link com.nostra13.universalimageloader.core.imageaware.ImageAware
+		 * image aware view} if empty URI (null or empty string) will be passed
+		 * to <b>ImageLoader.displayImage(...)</b> method. This option will be
+		 * ignored if
+		 * {@link DisplayImageOptions.Builder#showImageForEmptyUri(int)} is set.
 		 */
 		public Builder showImageForEmptyUri(Drawable drawable) {
 			imageForEmptyUri = drawable;
@@ -286,11 +288,13 @@ public final class DisplayImageOptions {
 		}
 
 		/**
-		 * Incoming image will be displayed in {@link com.nostra13.universalimageloader.core.imageaware.ImageAware
-		 * image aware view} if some error occurs during
-		 * requested image loading/decoding.
+		 * Incoming image will be displayed in
+		 * {@link com.nostra13.universalimageloader.core.imageaware.ImageAware
+		 * image aware view} if some error occurs during requested image
+		 * loading/decoding.
 		 *
-		 * @param imageRes Image resource
+		 * @param imageRes
+		 *            Image resource
 		 */
 		public Builder showImageOnFail(int imageRes) {
 			imageResOnFail = imageRes;
@@ -298,10 +302,11 @@ public final class DisplayImageOptions {
 		}
 
 		/**
-		 * Incoming drawable will be displayed in {@link com.nostra13.universalimageloader.core.imageaware.ImageAware
-		 * image aware view} if some error occurs during
-		 * requested image loading/decoding.
-		 * This option will be ignored if {@link DisplayImageOptions.Builder#showImageOnFail(int)} is set.
+		 * Incoming drawable will be displayed in
+		 * {@link com.nostra13.universalimageloader.core.imageaware.ImageAware
+		 * image aware view} if some error occurs during requested image
+		 * loading/decoding. This option will be ignored if
+		 * {@link DisplayImageOptions.Builder#showImageOnFail(int)} is set.
 		 */
 		public Builder showImageOnFail(Drawable drawable) {
 			imageOnFail = drawable;
@@ -310,9 +315,11 @@ public final class DisplayImageOptions {
 
 		/**
 		 * {@link com.nostra13.universalimageloader.core.imageaware.ImageAware
-		 * image aware view} will be reset (set <b>null</b>) before image loading start
+		 * image aware view} will be reset (set <b>null</b>) before image
+		 * loading start
 		 *
-		 * @deprecated Use {@link #resetViewBeforeLoading(boolean) resetViewBeforeLoading(true)} instead
+		 * @deprecated Use {@link #resetViewBeforeLoading(boolean)
+		 *             resetViewBeforeLoading(true)} instead
 		 */
 		public Builder resetViewBeforeLoading() {
 			resetViewBeforeLoading = true;
@@ -320,49 +327,21 @@ public final class DisplayImageOptions {
 		}
 
 		/**
-		 * Sets whether {@link com.nostra13.universalimageloader.core.imageaware.ImageAware
-		 * image aware view} will be reset (set <b>null</b>) before image loading start
+		 * Sets whether
+		 * {@link com.nostra13.universalimageloader.core.imageaware.ImageAware
+		 * image aware view} will be reset (set <b>null</b>) before image
+		 * loading start
 		 */
 		public Builder resetViewBeforeLoading(boolean resetViewBeforeLoading) {
 			this.resetViewBeforeLoading = resetViewBeforeLoading;
 			return this;
 		}
-
-		/**
-		 * Loaded image will be cached in memory
-		 *
-		 * @deprecated Use {@link #cacheInMemory(boolean) cacheInMemory(true)} instead
-		 */
-		@Deprecated
-		public Builder cacheInMemory() {
-			cacheInMemory = true;
-			return this;
-		}
+ 
 
 		/** Sets whether loaded image will be cached in memory */
 		public Builder cacheInMemory(boolean cacheInMemory) {
 			this.cacheInMemory = cacheInMemory;
 			return this;
-		}
-
-		/**
-		 * Loaded image will be cached on disk
-		 *
-		 * @deprecated Use {@link #cacheOnDisk(boolean) cacheOnDisk(true)} instead
-		 */
-		@Deprecated
-		public Builder cacheOnDisc() {
-			return cacheOnDisk(true);
-		}
-
-		/**
-		 * Sets whether loaded image will be cached on disk
-		 *
-		 * @deprecated Use {@link #cacheOnDisk(boolean)} instead
-		 */
-		@Deprecated
-		public Builder cacheOnDisc(boolean cacheOnDisk) {
-			return cacheOnDisk(cacheOnDisk);
 		}
 
 		/** Sets whether loaded image will be cached on disk */
@@ -372,31 +351,39 @@ public final class DisplayImageOptions {
 		}
 
 		/**
-		 * Sets {@linkplain ImageScaleType scale type} for decoding image. This parameter is used while define scale
-		 * size for decoding image to Bitmap. Default value - {@link ImageScaleType#IN_SAMPLE_POWER_OF_2}
+		 * Sets {@linkplain ImageScaleType scale type} for decoding image. This
+		 * parameter is used while define scale size for decoding image to
+		 * Bitmap. Default value - {@link ImageScaleType#IN_SAMPLE_POWER_OF_2}
 		 */
 		public Builder imageScaleType(ImageScaleType imageScaleType) {
 			this.imageScaleType = imageScaleType;
 			return this;
 		}
 
-		/** Sets {@link Bitmap.Config bitmap config} for image decoding. Default value - {@link Bitmap.Config#ARGB_8888} */
+		/**
+		 * Sets {@link Bitmap.Config bitmap config} for image decoding. Default
+		 * value - {@link Bitmap.Config#ARGB_8888}
+		 */
 		public Builder bitmapConfig(Bitmap.Config bitmapConfig) {
-			if (bitmapConfig == null) throw new IllegalArgumentException("bitmapConfig can't be null");
+			if (bitmapConfig == null)
+				throw new IllegalArgumentException("bitmapConfig can't be null");
 			decodingOptions.inPreferredConfig = bitmapConfig;
 			return this;
 		}
 
 		/**
 		 * Sets options for image decoding.<br />
-		 * <b>NOTE:</b> {@link Options#inSampleSize} of incoming options will <b>NOT</b> be considered. Library
-		 * calculate the most appropriate sample size itself according yo {@link #imageScaleType(ImageScaleType)}
-		 * options.<br />
-		 * <b>NOTE:</b> This option overlaps {@link #bitmapConfig(android.graphics.Bitmap.Config) bitmapConfig()}
+		 * <b>NOTE:</b> {@link Options#inSampleSize} of incoming options will
+		 * <b>NOT</b> be considered. Library calculate the most appropriate
+		 * sample size itself according yo
+		 * {@link #imageScaleType(ImageScaleType)} options.<br />
+		 * <b>NOTE:</b> This option overlaps
+		 * {@link #bitmapConfig(android.graphics.Bitmap.Config) bitmapConfig()}
 		 * option.
 		 */
 		public Builder decodingOptions(Options decodingOptions) {
-			if (decodingOptions == null) throw new IllegalArgumentException("decodingOptions can't be null");
+			if (decodingOptions == null)
+				throw new IllegalArgumentException("decodingOptions can't be null");
 			this.decodingOptions = decodingOptions;
 			return this;
 		}
@@ -407,21 +394,28 @@ public final class DisplayImageOptions {
 			return this;
 		}
 
-		/** Sets auxiliary object which will be passed to {@link ImageDownloader#getStream(String, Object)} */
-		public Builder extraForDownloader(HashMap<String,String> extra) {
-			this.extraForDownloader = extra;
+		/**
+		 * Sets auxiliary object which will be passed to
+		 * {@link ImageDownloader#getStream(String, Object)}
+		 */
+		public Builder addHeader(HashMap<String, String> header) {
+			this.header = header;
 			return this;
 		}
 
-		/** Sets whether ImageLoader will consider EXIF parameters of JPEG image (rotate, flip) */
+		/**
+		 * Sets whether ImageLoader will consider EXIF parameters of JPEG image
+		 * (rotate, flip)
+		 */
 		public Builder considerExifParams(boolean considerExifParams) {
 			this.considerExifParams = considerExifParams;
 			return this;
 		}
 
 		/**
-		 * Sets bitmap processor which will be process bitmaps before they will be cached in memory. So memory cache
-		 * will contain bitmap processed by incoming preProcessor.<br />
+		 * Sets bitmap processor which will be process bitmaps before they will
+		 * be cached in memory. So memory cache will contain bitmap processed by
+		 * incoming preProcessor.<br />
 		 * Image will be pre-processed even if caching in memory is disabled.
 		 */
 		public Builder preProcessor(BitmapProcessor preProcessor) {
@@ -430,9 +424,10 @@ public final class DisplayImageOptions {
 		}
 
 		/**
-		 * Sets bitmap processor which will be process bitmaps before they will be displayed in
-		 * {@link com.nostra13.universalimageloader.core.imageaware.ImageAware image aware view} but
-		 * after they'll have been saved in memory cache.
+		 * Sets bitmap processor which will be process bitmaps before they will
+		 * be displayed in
+		 * {@link com.nostra13.universalimageloader.core.imageaware.ImageAware
+		 * image aware view} but after they'll have been saved in memory cache.
 		 */
 		public Builder postProcessor(BitmapProcessor postProcessor) {
 			this.postProcessor = postProcessor;
@@ -440,11 +435,13 @@ public final class DisplayImageOptions {
 		}
 
 		/**
-		 * Sets custom {@link BitmapDisplayer displayer} for image loading task. Default value -
+		 * Sets custom {@link BitmapDisplayer displayer} for image loading task.
+		 * Default value -
 		 * {@link DefaultConfigurationFactory#createBitmapDisplayer()}
 		 */
 		public Builder displayer(BitmapDisplayer displayer) {
-			if (displayer == null) throw new IllegalArgumentException("displayer can't be null");
+			if (displayer == null)
+				throw new IllegalArgumentException("displayer can't be null");
 			this.displayer = displayer;
 			return this;
 		}
@@ -455,8 +452,8 @@ public final class DisplayImageOptions {
 		}
 
 		/**
-		 * Sets custom {@linkplain Handler handler} for displaying images and firing {@linkplain ImageLoadingListener
-		 * listener} events.
+		 * Sets custom {@linkplain Handler handler} for displaying images and
+		 * firing {@linkplain ImageLoadingListener listener} events.
 		 */
 		public Builder handler(Handler handler) {
 			this.handler = handler;
@@ -478,7 +475,7 @@ public final class DisplayImageOptions {
 			decodingOptions = options.decodingOptions;
 			delayBeforeLoading = options.delayBeforeLoading;
 			considerExifParams = options.considerExifParams;
-			extraForDownloader = options.extraForDownloader;
+			header = options.header;
 			preProcessor = options.preProcessor;
 			postProcessor = options.postProcessor;
 			displayer = options.displayer;
@@ -499,12 +496,15 @@ public final class DisplayImageOptions {
 	 * <li>View will <b>not</b> be reset before loading</li>
 	 * <li>Loaded image will <b>not</b> be cached in memory</li>
 	 * <li>Loaded image will <b>not</b> be cached on disk</li>
-	 * <li>{@link ImageScaleType#IN_SAMPLE_POWER_OF_2} decoding type will be used</li>
-	 * <li>{@link Bitmap.Config#ARGB_8888} bitmap config will be used for image decoding</li>
+	 * <li>{@link ImageScaleType#IN_SAMPLE_POWER_OF_2} decoding type will be
+	 * used</li>
+	 * <li>{@link Bitmap.Config#ARGB_8888} bitmap config will be used for image
+	 * decoding</li>
 	 * <li>{@link SimpleBitmapDisplayer} will be used for image displaying</li>
 	 * </ul>
 	 * <p/>
-	 * These option are appropriate for simple single-use image (from drawables or from Internet) displaying.
+	 * These option are appropriate for simple single-use image (from drawables
+	 * or from Internet) displaying.
 	 */
 	public static DisplayImageOptions createSimple() {
 		return new Builder().build();

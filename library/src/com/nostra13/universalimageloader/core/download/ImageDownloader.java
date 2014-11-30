@@ -34,7 +34,7 @@ public interface ImageDownloader {
 	 * Retrieves {@link InputStream} of image by URI.
 	 *
 	 * @param imageUri Image URI
-	 * @param extra    Auxiliary object which was passed to {@link DisplayImageOptions.Builder#extraForDownloader(Object)
+	 * @param extra    Auxiliary object which was passed to {@link DisplayImageOptions.Builder#addHeader(Object)
 	 *                 DisplayImageOptions.extraForDownloader(Object)}; can be null
 	 * @return {@link InputStream} of image
 	 * @throws IOException                   if some I/O error occurs during getting image stream

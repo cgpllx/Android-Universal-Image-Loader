@@ -114,7 +114,7 @@ public class BaseImageDownloader implements ImageDownloader {
 	 *            Image URI
 	 * @param extra
 	 *            Auxiliary object which was passed to
-	 *            {@link DisplayImageOptions.Builder#extraForDownloader(Object)
+	 *            {@link DisplayImageOptions.Builder#addHeader(Object)
 	 *            DisplayImageOptions.extraForDownloader(Object)}; can be null
 	 * @return {@link InputStream} of image
 	 * @throws IOException
@@ -152,7 +152,7 @@ public class BaseImageDownloader implements ImageDownloader {
 	 *            URL to connect to
 	 * @param extra
 	 *            Auxiliary object which was passed to
-	 *            {@link DisplayImageOptions.Builder#extraForDownloader(Object)
+	 *            {@link DisplayImageOptions.Builder#addHeader(Object)
 	 *            DisplayImageOptions.extraForDownloader(Object)}; can be null
 	 * @return {@linkplain HttpURLConnection Connection} for incoming URL.
 	 *         Connection isn't established so it still configurable.
@@ -176,7 +176,7 @@ public class BaseImageDownloader implements ImageDownloader {
 	 *            Image URI
 	 * @param extra
 	 *            Auxiliary object which was passed to
-	 *            {@link DisplayImageOptions.Builder#extraForDownloader(Object)
+	 *            {@link DisplayImageOptions.Builder#addHeader(Object)
 	 *            DisplayImageOptions.extraForDownloader(Object)}; can be null
 	 * @return {@link InputStream} of image
 	 * @throws IOException
@@ -213,7 +213,7 @@ public class BaseImageDownloader implements ImageDownloader {
 	 *            Image URI
 	 * @param extra
 	 *            Auxiliary object which was passed to
-	 *            {@link DisplayImageOptions.Builder#extraForDownloader(Object)
+	 *            {@link DisplayImageOptions.Builder#addHeader(Object)
 	 *            DisplayImageOptions.extraForDownloader(Object)}; can be null
 	 * @return {@link InputStream} of image
 	 * @throws FileNotFoundException
@@ -247,7 +247,7 @@ public class BaseImageDownloader implements ImageDownloader {
 	 *            Image URI
 	 * @param extra
 	 *            Auxiliary object which was passed to
-	 *            {@link DisplayImageOptions.Builder#extraForDownloader(Object)
+	 *            {@link DisplayImageOptions.Builder#addHeader(Object)
 	 *            DisplayImageOptions.extraForDownloader(Object)}; can be null
 	 * @return {@link InputStream} of image
 	 * @throws IOException
@@ -266,7 +266,7 @@ public class BaseImageDownloader implements ImageDownloader {
 	 *            Image URI
 	 * @param extra
 	 *            Auxiliary object which was passed to
-	 *            {@link DisplayImageOptions.Builder#extraForDownloader(Object)
+	 *            {@link DisplayImageOptions.Builder#addHeader(Object)
 	 *            DisplayImageOptions.extraForDownloader(Object)}; can be null
 	 * @return {@link InputStream} of image
 	 */
@@ -287,7 +287,7 @@ public class BaseImageDownloader implements ImageDownloader {
 	 *            Image URI
 	 * @param extra
 	 *            Auxiliary object which was passed to
-	 *            {@link DisplayImageOptions.Builder#extraForDownloader(Object)
+	 *            {@link DisplayImageOptions.Builder#addHeader(Object)
 	 *            DisplayImageOptions.extraForDownloader(Object)}; can be null
 	 * @return {@link InputStream} of image
 	 * @throws IOException

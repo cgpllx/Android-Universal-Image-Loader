@@ -593,32 +593,10 @@ public class ImageLoader {
 	 * Returns disk cache
 	 *
 	 * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)} method wasn't called before
-	 * @deprecated Use {@link #getDiskCache()} instead
-	 */
-	@Deprecated
-	public DiskCache getDiscCache() {
-		return getDiskCache();
-	}
-
-	/**
-	 * Returns disk cache
-	 *
-	 * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)} method wasn't called before
 	 */
 	public DiskCache getDiskCache() {
 		checkConfiguration();
 		return configuration.diskCache;
-	}
-
-	/**
-	 * Clears disk cache.
-	 *
-	 * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)} method wasn't called before
-	 * @deprecated Use {@link #clearDiskCache()} instead
-	 */
-	@Deprecated
-	public void clearDiscCache() {
-		clearDiskCache();
 	}
 
 	/**
