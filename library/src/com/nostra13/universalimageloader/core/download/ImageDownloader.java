@@ -15,11 +15,12 @@
  *******************************************************************************/
 package com.nostra13.universalimageloader.core.download;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Locale;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 /**
  * Provides retrieving of {@link InputStream} of image by URI.<br />
@@ -39,7 +40,7 @@ public interface ImageDownloader {
 	 * @throws IOException                   if some I/O error occurs during getting image stream
 	 * @throws UnsupportedOperationException if image URI has unsupported scheme(protocol)
 	 */
-	InputStream getStream(String imageUri, Object extra) throws IOException;
+	InputStream getStream(String imageUri, HashMap<String, String> header) throws IOException;
 
 	/** Represents supported schemes(protocols) of URI. Provides convenient methods for work with schemes and URIs. */
 	public enum Scheme {

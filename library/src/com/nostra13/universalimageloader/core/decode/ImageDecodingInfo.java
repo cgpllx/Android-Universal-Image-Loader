@@ -15,6 +15,8 @@
  *******************************************************************************/
 package com.nostra13.universalimageloader.core.decode;
 
+import java.util.HashMap;
+
 import android.annotation.TargetApi;
 import android.graphics.BitmapFactory.Options;
 import android.os.Build;
@@ -42,7 +44,7 @@ public class ImageDecodingInfo {
 	private final ViewScaleType viewScaleType;
 
 	private final ImageDownloader downloader;
-	private final Object extraForDownloader;
+	private final HashMap<String,String> extraForDownloader;
 
 	private final boolean considerExifParams;
 	private final Options decodingOptions;
@@ -134,7 +136,7 @@ public class ImageDecodingInfo {
 	}
 
 	/** @return Auxiliary object for downloader */
-	public Object getExtraForDownloader() {
+	public HashMap<String,String> getExtraForDownloader() {
 		return extraForDownloader;
 	}
 

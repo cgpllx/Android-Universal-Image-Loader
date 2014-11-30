@@ -15,16 +15,19 @@
  *******************************************************************************/
 package com.nostra13.universalimageloader.core;
 
+import java.util.HashMap;
+
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.BitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.ImageDownloader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.process.BitmapProcessor;
 
 /**
@@ -77,7 +80,7 @@ public final class DisplayImageOptions {
 	private final Options decodingOptions;
 	private final int delayBeforeLoading;
 	private final boolean considerExifParams;
-	private final Object extraForDownloader;
+	private final HashMap<String,String> extraForDownloader;
 	private final BitmapProcessor preProcessor;
 	private final BitmapProcessor postProcessor;
 	private final BitmapDisplayer displayer;
@@ -170,7 +173,7 @@ public final class DisplayImageOptions {
 		return considerExifParams;
 	}
 
-	public Object getExtraForDownloader() {
+	public HashMap<String,String> getExtraForDownloader() {
 		return extraForDownloader;
 	}
 
@@ -213,7 +216,7 @@ public final class DisplayImageOptions {
 		private Options decodingOptions = new Options();
 		private int delayBeforeLoading = 0;
 		private boolean considerExifParams = false;
-		private Object extraForDownloader = null;
+		private HashMap<String,String> extraForDownloader = null;
 		private BitmapProcessor preProcessor = null;
 		private BitmapProcessor postProcessor = null;
 		private BitmapDisplayer displayer = DefaultConfigurationFactory.createBitmapDisplayer();
@@ -405,7 +408,7 @@ public final class DisplayImageOptions {
 		}
 
 		/** Sets auxiliary object which will be passed to {@link ImageDownloader#getStream(String, Object)} */
-		public Builder extraForDownloader(Object extra) {
+		public Builder extraForDownloader(HashMap<String,String> extra) {
 			this.extraForDownloader = extra;
 			return this;
 		}

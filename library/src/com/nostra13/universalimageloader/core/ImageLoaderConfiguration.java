@@ -18,6 +18,7 @@ package com.nostra13.universalimageloader.core;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
+
 import com.nostra13.universalimageloader.cache.disc.DiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.MemoryCache;
@@ -33,6 +34,7 @@ import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.concurrent.Executor;
 
 /**
@@ -614,7 +616,7 @@ public final class ImageLoaderConfiguration {
 		}
 
 		@Override
-		public InputStream getStream(String imageUri, Object extra) throws IOException {
+		public InputStream getStream(String imageUri, HashMap<String,String> extra) throws IOException {
 			switch (Scheme.ofUri(imageUri)) {
 				case HTTP:
 				case HTTPS:
@@ -641,7 +643,7 @@ public final class ImageLoaderConfiguration {
 		}
 
 		@Override
-		public InputStream getStream(String imageUri, Object extra) throws IOException {
+		public InputStream getStream(String imageUri, HashMap<String,String> extra) throws IOException {
 			InputStream imageStream = wrappedDownloader.getStream(imageUri, extra);
 			switch (Scheme.ofUri(imageUri)) {
 				case HTTP:
